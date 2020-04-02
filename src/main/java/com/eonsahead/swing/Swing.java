@@ -18,7 +18,7 @@ public class Swing extends JFrame implements ActionListener {
     private final int FRAME_WIDTH = 512;
     private final int FRAME_HEIGHT = 512;
     private final String FRAME_TITLE = "Swing";
-    private final int NUMBER_OF_COLORS = 8;
+    private final int NUMBER_OF_COLORS = 10;
     private final List<Color> palette = new ArrayList<>();
     private final JPanel panel;
 
