@@ -39,10 +39,27 @@ public class Matrix {
     public void rotationZ(double angle) {
         this.identity();
         this.set(0, 0, Math.cos(angle));
+        this.set(0, 1, Math.sin(angle));
+        this.set(1, 0, -Math.sin(angle));
+        this.set(1, 1, Math.cos(angle));
+    } // rotationZ( double )
+    
+    public void rotationY(double angle){
+        this.identity();
+        this.set(0, 0, Math.cos(angle));
         this.set(0, 1, -Math.sin(angle));
         this.set(1, 0, Math.sin(angle));
         this.set(1, 1, Math.cos(angle));
-    } // rotationZ( double )
+    } // rotationY(double)
+    
+//    public void rotationX(double angle){
+//        this.identity();
+//    
+//    } // rotationX(double)
+    
+    public void scale(double xScale, double yScale, double zScale){
+        
+    } // scale(double, double, double)
 
     public Matrix multiply(Matrix otherMatrix) {
         Matrix product = new Matrix();
