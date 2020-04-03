@@ -66,6 +66,12 @@ public class Matrix {
         this.set(2, 2, zScale);
 
     } // scale(double, double, double)
+    
+    public void translate(double deltaX, double deltaY, double deltaZ ){
+        this.set(0, 3, deltaX);
+        this.set(1, 3, deltaY);
+        this.set(2, 3, deltaZ);
+    } // translate(double, double, double)
 
     public Matrix multiply(Matrix otherMatrix) {
         Matrix product = new Matrix();
