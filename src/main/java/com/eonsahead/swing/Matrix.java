@@ -43,22 +43,28 @@ public class Matrix {
         this.set(1, 0, -Math.sin(angle));
         this.set(1, 1, Math.cos(angle));
     } // rotationZ( double )
-    
-    public void rotationY(double angle){
+
+    public void rotationY(double angle) {
         this.identity();
         this.set(0, 0, Math.cos(angle));
-        this.set(0, 1, -Math.sin(angle));
-        this.set(1, 0, Math.sin(angle));
-        this.set(1, 1, Math.cos(angle));
+        this.set(0, 2, -Math.sin(angle));
+        this.set(2, 0, Math.sin(angle));
+        this.set(2, 2, Math.cos(angle));
     } // rotationY(double)
-    
-//    public void rotationX(double angle){
-//        this.identity();
-//    
-//    } // rotationX(double)
-    
-    public void scale(double xScale, double yScale, double zScale){
-        
+
+    public void rotationX(double angle) {
+        this.identity();
+        this.set(1, 1, Math.cos(angle));
+        this.set(1, 2, -Math.sin(angle));
+        this.set(2, 1, Math.sin(angle));
+        this.set(2, 2, Math.cos(angle));
+    } // rotationX(double)
+
+    public void scale(double xScale, double yScale, double zScale) {
+        this.set(0, 0, xScale);
+        this.set(1, 1, yScale);
+        this.set(2, 2, zScale);
+
     } // scale(double, double, double)
 
     public Matrix multiply(Matrix otherMatrix) {
@@ -80,10 +86,10 @@ public class Matrix {
         StringBuilder result = new StringBuilder();
         result.append("( ");
         for (int i = 0; i < 3; i++) {
-            result.append(this.get( row, i));
+            result.append(this.get(row, i));
             result.append(",");
         } // for
-        result.append(this.get( row, 3 ));
+        result.append(this.get(row, 3));
         result.append(" )");
         return result.toString();
     } // rowToString( int )
