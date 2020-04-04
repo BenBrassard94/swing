@@ -34,22 +34,23 @@ public class Swing extends JFrame implements ActionListener {
 
         Random rng = new Random();
         for (int i = 0; i < NUMBER_OF_COLORS; i++) {
-            int red = 64 + rng.nextInt(200);
-            int green = 64 + rng.nextInt(200);
-            int blue = 64 + rng.nextInt(200);
+            int red = 64 + rng.nextInt(100);
+            int green = 64 + rng.nextInt(100);
+            int blue = 64 + rng.nextInt(100);
             Color color = new Color(red, green, blue);
             palette.add(color);
         } // for
         this.panel.setBackground(palette.get(0));
 
         for (int i = 0; i < NUMBER_OF_COLORS; i++) {
-            int red = 64 + rng.nextInt(200);
-            int green = 64 + rng.nextInt(200);
-            int blue = 64 + rng.nextInt(200);
+            int red = 64 + rng.nextInt(100);
+            int green = 64 + rng.nextInt(100);
+            int blue = 64 + rng.nextInt(100);
             Color color = new Color(red, green, blue);
             foregroundPalette.add(color);
 
         } // for
+
         
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
@@ -64,17 +65,29 @@ public class Swing extends JFrame implements ActionListener {
             item.setActionCommand(label);
             colorMenu.add(item);
         } // for
+        
+        JMenu foregroundColor = new JMenu("Foreground");
+        menuBar.add(foregroundColor);
+        for( int i = 0; i < NUMBER_OF_COLORS; i++){
+            String label = "Foreground " + i;
+            JMenuItem item = new JMenuItem(label);
+            item.addActionListener(this);
+            item.setActionCommand(label);
+            foregroundColor.add(item);
+            
+        } // for
 
         this.setVisible(true);
     } // Swing()
 
     @Override
-    public void actionPerformed(ActionEvent event
-    ) {
+    public void actionPerformed(ActionEvent event) {
         String actionCommand = event.getActionCommand();
-        String suffix = actionCommand.substring(5).trim();
-        int index = Integer.parseInt(suffix);
-        this.panel.setBackground(palette.get(index));
+        if (actionCommand.indexOf("Color") >= 0){
+            String suffix = actionCommand.substring(5).trim();
+            int index = Integer.parseInt(suffix);
+            this.panel.setBackground(palette.get(index));
+        } // if
     } // actionPerformed( ActionEvent )
 
     public static void main(String[] args) {
