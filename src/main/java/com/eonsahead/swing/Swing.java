@@ -21,7 +21,7 @@ public class Swing extends JFrame implements ActionListener {
     private final int NUMBER_OF_COLORS = 10;
     private final List<Color> palette = new ArrayList<>();
     private final List<Color> foregroundPalette = new ArrayList<>();
-    private final JPanel panel;
+    private final SwingPanel panel;
 
     public Swing() {
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -43,9 +43,9 @@ public class Swing extends JFrame implements ActionListener {
         this.panel.setBackground(palette.get(0));
 
         for (int i = 0; i < NUMBER_OF_COLORS; i++) {
-            int red = 64 + rng.nextInt(100);
-            int green = 64 + rng.nextInt(100);
-            int blue = 64 + rng.nextInt(100);
+            int red = rng.nextInt(200);
+            int green = rng.nextInt(200);
+            int blue = rng.nextInt(200);
             Color color = new Color(red, green, blue);
             foregroundPalette.add(color);
 
@@ -103,6 +103,9 @@ public class Swing extends JFrame implements ActionListener {
             String suffix = actionCommand.substring(10).trim();
             int index = Integer.parseInt(suffix);
             this.panel.setColor(foregroundPalette.get(index));
+        } // else if
+        else if (actionCommand == "Circle"){
+            this.panel.setShape(actionCommand);
         } // else if
     } // actionPerformed( ActionEvent )
 
