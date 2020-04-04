@@ -20,6 +20,7 @@ public class Swing extends JFrame implements ActionListener {
     private final String FRAME_TITLE = "Swing";
     private final int NUMBER_OF_COLORS = 10;
     private final List<Color> palette = new ArrayList<>();
+    private final List<Color> foregroundPalette = new ArrayList<>();
     private final JPanel panel;
 
     public Swing() {
@@ -33,14 +34,23 @@ public class Swing extends JFrame implements ActionListener {
 
         Random rng = new Random();
         for (int i = 0; i < NUMBER_OF_COLORS; i++) {
-            int red = 64 + rng.nextInt(128);
-            int green = 64 + rng.nextInt(128);
-            int blue = 64 + rng.nextInt(128);
+            int red = 64 + rng.nextInt(200);
+            int green = 64 + rng.nextInt(200);
+            int blue = 64 + rng.nextInt(200);
             Color color = new Color(red, green, blue);
             palette.add(color);
         } // for
         this.panel.setBackground(palette.get(0));
 
+        for (int i = 0; i < NUMBER_OF_COLORS; i++) {
+            int red = 64 + rng.nextInt(200);
+            int green = 64 + rng.nextInt(200);
+            int blue = 64 + rng.nextInt(200);
+            Color color = new Color(red, green, blue);
+            foregroundPalette.add(color);
+
+        } // for
+        
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
 
@@ -59,11 +69,12 @@ public class Swing extends JFrame implements ActionListener {
     } // Swing()
 
     @Override
-    public void actionPerformed(ActionEvent event) {
+    public void actionPerformed(ActionEvent event
+    ) {
         String actionCommand = event.getActionCommand();
         String suffix = actionCommand.substring(5).trim();
-        int index = Integer.parseInt( suffix );
-        this.panel.setBackground( palette.get(index));
+        int index = Integer.parseInt(suffix);
+        this.panel.setBackground(palette.get(index));
     } // actionPerformed( ActionEvent )
 
     public static void main(String[] args) {
