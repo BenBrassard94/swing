@@ -50,6 +50,7 @@ public class Swing extends JFrame implements ActionListener {
             foregroundPalette.add(color);
 
         } // for
+        this.panel.setColor(foregroundPalette.get(0));
 
         
         JMenuBar menuBar = new JMenuBar();
@@ -76,6 +77,16 @@ public class Swing extends JFrame implements ActionListener {
             foregroundColor.add(item);
             
         } // for
+        
+        String[] geom = {"Circle"};
+        JMenu shape = new JMenu("Shape");
+        menuBar.add(shape);
+        for(String i : geom){
+            JMenuItem item = new JMenuItem(i);
+            item.addActionListener(this);
+            item.setActionCommand(i);
+            shape.add(item);
+        } // for
 
         this.setVisible(true);
     } // Swing()
@@ -84,10 +95,15 @@ public class Swing extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         String actionCommand = event.getActionCommand();
         if (actionCommand.indexOf("Color") >= 0){
-            String suffix = actionCommand.substring(5).trim();
+            String suffix = actionCommand.substring(6).trim();
             int index = Integer.parseInt(suffix);
             this.panel.setBackground(palette.get(index));
         } // if
+        else if (actionCommand.indexOf("Foreground") >= 0){
+            String suffix = actionCommand.substring(10).trim();
+            int index = Integer.parseInt(suffix);
+            this.panel.setColor(foregroundPalette.get(index));
+        } // else if
     } // actionPerformed( ActionEvent )
 
     public static void main(String[] args) {
