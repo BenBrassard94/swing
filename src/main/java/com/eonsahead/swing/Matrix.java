@@ -61,13 +61,23 @@ public class Matrix {
     } // rotationX(double)
 
     public void scale(double xScale, double yScale, double zScale) {
+        this.identity();
         this.set(0, 0, xScale);
         this.set(1, 1, yScale);
         this.set(2, 2, zScale);
 
     } // scale(double, double, double)
     
+    /**
+     * Adds a translation method to the matrix
+     * 
+     * @param deltaX Translation in x direction
+     * @param deltaY Translation in y direction
+     * @param deltaZ Translation in z direction
+     */
+   
     public void translate(double deltaX, double deltaY, double deltaZ ){
+        this.identity();
         this.set(0, 3, deltaX);
         this.set(1, 3, deltaY);
         this.set(2, 3, deltaZ);
@@ -87,6 +97,26 @@ public class Matrix {
         } // for
         return product;
     } // multiply( Matrix )
+    
+    /**
+     * Multiply the Matrix with the Vector
+     * 
+     * @param vector The vector that is being multiplied
+     * @return The product vector
+     */
+    
+    public Vector multiply(Vector vector) {
+        double[] vectorV = new double[4];
+        for(int i = 0; i < 4; i++){
+            double sum = 0.0;
+            for(int k = 0; k < 4; k++){
+                sum += this.get(i,k) * vector.get(k);
+                
+            } // for
+            vectorV[i] = sum;
+        } // for
+        return new Vector(vectorV[0], vectorV[1], vectorV[2], vectorV[3]);
+    } // multiply(Vector)
 
     private String rowToString(int row) {
         StringBuilder result = new StringBuilder();
