@@ -1,28 +1,47 @@
 package com.eonsahead.swing;
 
 /**
- * Model a matrix.
+ * Models a 4x4 vector
  *
- * @author Leon Tabak
- * @version 1 April 2020
+ * @author Ben Brassard
+ * @version 5 April 2020
  */
 public class Matrix {
 
     private final double[][] elements;
 
+    /**
+     * Creates a 4x4 identity Matrix
+     */
     public Matrix() {
         this.elements = new double[4][4];
         this.identity();
     } // Matrix()
 
+    /**
+     * Returns certain value in the element
+     * 
+     * @param row The row of elements
+     * @param column The column of elements
+     * @return The value wanted in the element
+     */
     public double get(int row, int column) {
         return this.elements[row][column];
     } // get( int, int )
 
+    /**
+     * 
+     * @param row The row of elements
+     * @param column The column of elements
+     * @param value The value of the set
+     */
     public void set(int row, int column, double value) {
         this.elements[row][column] = value;
     } // set( int, int, double )
 
+    /**
+     * Sets matrix to the identity matrix
+     */
     public final void identity() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -36,6 +55,11 @@ public class Matrix {
         } // for
     } // identity()
 
+    /**
+     * Rotates around z axis by the angle given
+     * 
+     * @param angle The angle given to rotate
+     */
     public void rotationZ(double angle) {
         this.identity();
         this.set(0, 0, Math.cos(angle));
@@ -44,6 +68,11 @@ public class Matrix {
         this.set(1, 1, Math.cos(angle));
     } // rotationZ( double )
 
+    /**
+     * Rotates around y axis by the angle given
+     * 
+     * @param angle The angle given to rotate
+     */
     public void rotationY(double angle) {
         this.identity();
         this.set(0, 0, Math.cos(angle));
@@ -52,6 +81,11 @@ public class Matrix {
         this.set(2, 2, Math.cos(angle));
     } // rotationY(double)
 
+    /**
+     * Rotates around x axis by the angle given
+     * 
+     * @param angle The angle given to rotate
+     */
     public void rotationX(double angle) {
         this.identity();
         this.set(1, 1, Math.cos(angle));
@@ -60,6 +94,14 @@ public class Matrix {
         this.set(2, 2, Math.cos(angle));
     } // rotationX(double)
 
+    /**
+     * Adds scaling method to the matrix
+     * 
+     * @param xScale The x scale factor
+     * @param yScale The y scale factor
+     * @param zScale The z scale factor
+     */
+    
     public void scale(double xScale, double yScale, double zScale) {
         this.identity();
         this.set(0, 0, xScale);
@@ -83,6 +125,13 @@ public class Matrix {
         this.set(2, 3, deltaZ);
     } // translate(double, double, double)
 
+    /**
+     * Multiplies two Matrices together
+     * 
+     * @param otherMatrix The separate matrix to multiply with
+     * @return The product
+     */
+    
     public Matrix multiply(Matrix otherMatrix) {
         Matrix product = new Matrix();
         for (int row = 0; row < 4; row++) {
@@ -118,6 +167,13 @@ public class Matrix {
         return new Vector(vectorV[0], vectorV[1], vectorV[2], vectorV[3]);
     } // multiply(Vector)
 
+    /**
+     * Prints the wanted row in string form
+     * 
+     * @param row The row to convert into string
+     * @return The row in string form
+     */
+    
     private String rowToString(int row) {
         StringBuilder result = new StringBuilder();
         result.append("( ");
@@ -130,6 +186,11 @@ public class Matrix {
         return result.toString();
     } // rowToString( int )
 
+    /**
+     * Prints the Matrix in string form
+     * 
+     * @return The matrix in string form
+     */
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
