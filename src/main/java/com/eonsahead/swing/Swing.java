@@ -2,8 +2,6 @@ package com.eonsahead.swing;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,17 +9,20 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 
-public class Swing extends JFrame implements ActionListener {
+public class Swing extends JFrame {
 
     private final int FRAME_WIDTH = 512;
     private final int FRAME_HEIGHT = 512;
     private final String FRAME_TITLE = "Swing";
     private final int NUMBER_OF_COLORS = 10;
-    private final List<Color> palette = new ArrayList<>();
-    private final List<Color> foregroundPalette = new ArrayList<>();
+    private final String BG_COLOR = "Background Color";
+    private final String FG_COLOR = "Foreground Color";
+
+    private final List<Color> bgPalette = new ArrayList<>();
+    private final List<Color> fgPalette = new ArrayList<>();
     private final SwingPanel panel;
+    private final Random rng = new Random();
 
     public Swing() {
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -32,85 +33,67 @@ public class Swing extends JFrame implements ActionListener {
         this.panel = new SwingPanel();
         pane.add(panel);
 
-        Random rng = new Random();
         for (int i = 0; i < NUMBER_OF_COLORS; i++) {
-            int red = 64 + rng.nextInt(100);
-            int green = 64 + rng.nextInt(100);
-            int blue = 64 + rng.nextInt(100);
-            Color color = new Color(red, green, blue);
-            palette.add(color);
-        } // for
-        this.panel.setBackground(palette.get(0));
-
-        for (int i = 0; i < NUMBER_OF_COLORS; i++) {
-            int red = rng.nextInt(200);
-            int green = rng.nextInt(200);
-            int blue = rng.nextInt(200);
-            Color color = new Color(red, green, blue);
-            foregroundPalette.add(color);
+            Color color = makeColor(32, 224);
+            bgPalette.add(color);
 
         } // for
-        this.panel.setColor(foregroundPalette.get(0));
+        this.panel.setBackground(bgPalette.get(0));
 
-        
+        for (int i = 0; i < NUMBER_OF_COLORS; i++) {
+            Color color = makeColor(32, 224);
+            fgPalette.add(color);
+
+        } // for
+        this.panel.setColor(fgPalette.get(0));
+
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
 
-        JMenu colorMenu = new JMenu("Color ");
-        menuBar.add(colorMenu);
+        JMenu bgColorMenu = new JMenu(BG_COLOR);
+        menuBar.add(bgColorMenu);
+
+        MenuListener bgListener = new MenuListener(MenuListener.BG_MODE,
+                this.BG_COLOR, this.bgPalette, this.panel);
 
         for (int i = 0; i < NUMBER_OF_COLORS; i++) {
-            String label = "Color " + i;
-            JMenuItem item = new JMenuItem(label);
-            item.addActionListener(this);
-            item.setActionCommand(label);
-            colorMenu.add(item);
-        } // for
-        
-        JMenu foregroundColor = new JMenu("Foreground");
-        menuBar.add(foregroundColor);
-        for( int i = 0; i < NUMBER_OF_COLORS; i++){
-            String label = "Foreground " + i;
-            JMenuItem item = new JMenuItem(label);
-            item.addActionListener(this);
-            item.setActionCommand(label);
-            foregroundColor.add(item);
-            
-        } // for
-        
-        String[] geom = {"Circle"};
-        JMenu shape = new JMenu("Shape");
-        menuBar.add(shape);
-        for(String i : geom){
-            JMenuItem item = new JMenuItem(i);
-            item.addActionListener(this);
-            item.setActionCommand(i);
-            shape.add(item);
+            makeMenuItem(BG_COLOR, i, bgListener, bgColorMenu);
+
         } // for
 
+        JMenu fgColorMenu = new JMenu(FG_COLOR);
+        menuBar.add(fgColorMenu);
+
+        MenuListener fgListener = new MenuListener(MenuListener.FG_MODE,
+                this.FG_COLOR, this.fgPalette, this.panel);
+
+        for (int i = 0; i < NUMBER_OF_COLORS; i++) {
+            makeMenuItem(FG_COLOR, i, fgListener, fgColorMenu);
+        } // for
         this.setVisible(true);
+
     } // Swing()
 
-    @Override
-    public void actionPerformed(ActionEvent event) {
-        String actionCommand = event.getActionCommand();
-        if (actionCommand.indexOf("Color") >= 0){
-            String suffix = actionCommand.substring(6).trim();
-            int index = Integer.parseInt(suffix);
-            this.panel.setBackground(palette.get(index));
-        } // if
-        else if (actionCommand.indexOf("Foreground") >= 0){
-            String suffix = actionCommand.substring(10).trim();
-            int index = Integer.parseInt(suffix);
-            this.panel.setColor(foregroundPalette.get(index));
-        } // else if
-        else if (actionCommand == "Circle"){
-            this.panel.setShape(actionCommand);
-        } // else if
-    } // actionPerformed( ActionEvent )
+    public final Color makeColor(int low, int high) {
+        int red = low + this.rng.nextInt(high);
+        int green = low + this.rng.nextInt(high);
+        int blue = low + this.rng.nextInt(high);
+        Color color = new Color(red, green, blue);
+        return color;
+    } // makeColor(int, int)
+
+    public final void makeMenuItem(String prefix, int index,
+            MenuListener listener, JMenu menu) {
+        String label = prefix + " " + index;
+        JMenuItem item = new JMenuItem(label);
+        item.addActionListener(listener);
+        item.setActionCommand(label);
+        menu.add(item);
+
+    } // makeMenuItem
 
     public static void main(String[] args) {
         Swing swing = new Swing();
-    } // main( String [] )
+    } // main
 
 } // Swing
