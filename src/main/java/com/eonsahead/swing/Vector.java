@@ -128,4 +128,12 @@ public class Vector {
         return new Vector(xC, yC, zC);
         
     } // cross(Vector)
+    
+    public void set(Vector v){
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+        this.h = v.h;
+        
+    } // set(Vector)
 } // Vector
