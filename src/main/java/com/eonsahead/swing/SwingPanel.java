@@ -29,12 +29,14 @@ public class SwingPanel extends JPanel implements ActionListener {
     private double deltaX = Math.random() / 20;
     private double deltaY = Math.random() / 20;
     private double deltaAngle = 2 * Math.PI / 180;
-    private double phase = 0.0;
+
     private Shape shape;
 
     private Color color = Color.red;
-    private Polygon3D poly;
+    private Prism prism;
     private Matrix spinner;
+    
+    private final Vector illumination;
 
     // Borrowed from Leon Tabak
     public SwingPanel() {
@@ -74,9 +76,6 @@ public class SwingPanel extends JPanel implements ActionListener {
         int h = this.getHeight();
 
         AffineTransform transform = new AffineTransform();
-
-        AffineTransform rotation = new AffineTransform();
-        rotation.setToRotation(this.phase);
 
         AffineTransform scaling = new AffineTransform();
         scaling.setToScale(w / 2, h / 2);
@@ -178,7 +177,7 @@ public class SwingPanel extends JPanel implements ActionListener {
 //        if (this.phase > 2 * Math.PI) {
 //            this.phase = this.phase - 2 * Math.PI;
 //        } // if
-        this.poly.transform(spinner);
+        this.prism.transform(spinner);
         this.repaint();
     } // actionPerformed( ActionEvent )
 
