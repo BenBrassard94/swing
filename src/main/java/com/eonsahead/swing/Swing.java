@@ -24,6 +24,10 @@ public class Swing extends JFrame {
     private final SwingPanel panel;
     private final Random rng = new Random();
 
+    /**
+     * Creates the window and the menus for the project
+     */
+    
     public Swing() {
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setTitle(FRAME_TITLE);
@@ -73,6 +77,15 @@ public class Swing extends JFrame {
         this.setVisible(true);
 
     } // Swing()
+    
+    /**
+     * Made to refractor the code and make the color method 
+     * cleaner above
+     * 
+     * @param low The lowest color sequence
+     * @param high The highest color sequence
+     * @return The newest color
+     */
 
     public final Color makeColor(int low, int high) {
         int red = low + this.rng.nextInt(high);
@@ -81,6 +94,15 @@ public class Swing extends JFrame {
         Color color = new Color(red, green, blue);
         return color;
     } // makeColor(int, int)
+    
+    /**
+     * Creates menus above in cleaner code, also a refractor
+     * 
+     * @param prefix The start of the string
+     * @param index The end of the string
+     * @param listener The listener of the certain menu
+     * @param menu The menu that is being created
+     */
 
     public final void makeMenuItem(String prefix, int index,
             MenuListener listener, JMenu menu) {
