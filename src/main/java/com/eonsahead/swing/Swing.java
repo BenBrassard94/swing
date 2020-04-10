@@ -10,6 +10,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+/**
+ * 
+ * @author bj.brassard
+ * @version 9 April 2020
+ */
+
 public class Swing extends JFrame {
 
     private final int FRAME_WIDTH = 700;
