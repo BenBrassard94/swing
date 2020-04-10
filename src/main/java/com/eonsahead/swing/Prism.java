@@ -3,6 +3,12 @@ package com.eonsahead.swing;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author bj.brassard
+ * @version 9 April 2020
+ */
+
 public class Prism {
 
     private final List<Polygon3D> faces;
