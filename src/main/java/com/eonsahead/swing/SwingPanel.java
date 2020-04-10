@@ -7,18 +7,17 @@ import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
 import java.util.List;
-import java.util.Random;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+/**
+ * 
+ * @author bj.brassard
+ * @version 9 April 2020
+ */
+
 public class SwingPanel extends JPanel implements ActionListener {
-// a SwingPanel is a kind of JPanel
-// and
-// a SwingPanel is a kind of ActionListener
 
     private final int points = 8;
     private double centerX = 0.0;
