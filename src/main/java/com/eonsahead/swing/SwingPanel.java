@@ -35,24 +35,26 @@ public class SwingPanel extends JPanel implements ActionListener {
     private Color color = Color.red;
     private Polygon3D poly;
     private Matrix spinner;
-    
-    // Borrowed from Leon Tabak
 
+    // Borrowed from Leon Tabak
     public SwingPanel() {
         Timer timer = new Timer(20, this);
         timer.start();
 
-        this.poly = new Polygon3D(5, 0.6);
+        this.prism = new Prism(3, 0.5, 0.5);
         Matrix a = new Matrix();
-        a.rotationX(Math.PI / 112);
+        a.rotationX(Math.PI / 400);
 
         Matrix b = new Matrix();
-        b.rotationY(Math.PI / 144);
+        b.rotationY(Math.PI / 400);
 
         Matrix c = new Matrix();
-        c.rotationZ(Math.PI / 80);
+        c.rotationZ(Math.PI / 400);
 
         this.spinner = a.multiply(b).multiply(c);
+
+        this.illumination = (new Vector(1.0, 2.0, 3.0)).normalize();
+
     } // SwingPanel()
 
     public Color getColor() {
@@ -86,42 +88,41 @@ public class SwingPanel extends JPanel implements ActionListener {
 
         transform.concatenate(scaling);
         transform.concatenate(translation);
-        
+
         List<Polygon3D> faces = this.prism.getFaces();
-        for(Polygon3D p : faces){
+        for (Polygon3D p : faces) {
             Shape s = transform.createTransformedShape(p.getShape());
-            
+
             Vector normal = p.getNormal();
-            if (normal.get(2) > 0){
+            if (normal.get(2) > 0) {
                 double brightness = normal.dot(illumination);
-                
+
                 Color c = this.getColor();
-                
+
                 double ambient = 0.5;
                 int red;
                 int green;
                 int blue;
-                if(brightness > 0){
+                if (brightness > 0) {
                     red = (int) (brightness * c.getRed());
                     green = (int) (brightness * c.getGreen());
                     blue = (int) (brightness * c.getBlue());
-                    
+
                 } // if
-                
                 else {
                     red = (int) (ambient * c.getRed());
                     green = (int) (ambient * c.getGreen());
                     blue = (int) (ambient * c.getBlue());
-                    
+
                 } // else
                 Color shade = new Color(red, green, blue);
-                
+
                 g2D.setColor(shade);
                 g2D.fill(s);
             } // if
-            
+
         } // for
-        
+
     } // paintComponent( Graphics )
 
     private Shape makeStar(int points,
@@ -177,7 +178,6 @@ public class SwingPanel extends JPanel implements ActionListener {
 //        if (this.phase > 2 * Math.PI) {
 //            this.phase = this.phase - 2 * Math.PI;
 //        } // if
-        
         this.poly.transform(spinner);
         this.repaint();
     } // actionPerformed( ActionEvent )
