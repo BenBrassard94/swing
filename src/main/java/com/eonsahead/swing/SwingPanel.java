@@ -8,51 +8,52 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 import java.util.Random;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class SwingPanel extends JPanel implements ActionListener {
+// a SwingPanel is a kind of JPanel
+// and
+// a SwingPanel is a kind of ActionListener
 
+    private final int points = 8;
     private double centerX = 0.0;
     private double centerY = 0.0;
-    private double radius = 0.5;
-    private final double[] direction = new double[2];
+    private final double minorRadius = 0.2;
+    private final double majorRadius = 0.3;
+
+    private double deltaX = Math.random() / 20;
+    private double deltaY = Math.random() / 20;
+    private double deltaAngle = 2 * Math.PI / 180;
+    private double phase = 0.0;
+    private Shape shape;
+
     private Color color = Color.red;
-    private String shapeDraw = "Circle";
-    Random rng = new Random();
+    private Polygon3D poly;
+    private Matrix spinner;
+    
+    // Borrowed from Leon Tabak
 
     public SwingPanel() {
-        Timer timer = new Timer(50, this);
+        Timer timer = new Timer(20, this);
         timer.start();
-        direction[0] = 0.01 + (rng.nextDouble() / 30);
-        direction[1] = 0.01 + (rng.nextDouble() / 30);
+
+        this.poly = new Polygon3D(5, 0.6);
+        Matrix a = new Matrix();
+        a.rotationX(Math.PI / 112);
+
+        Matrix b = new Matrix();
+        b.rotationY(Math.PI / 144);
+
+        Matrix c = new Matrix();
+        c.rotationZ(Math.PI / 80);
+
+        this.spinner = a.multiply(b).multiply(c);
     } // SwingPanel()
-
-    public double getCenterX() {
-        return this.centerX;
-    } // getCenterX()
-
-    public void setCenterX(double x) {
-        this.centerX = x;
-    } // setCenterX( double )
-
-    public double getCenterY() {
-        return this.centerY;
-    } // getCenterY()
-
-    public void setCenterY(double y) {
-        this.centerY = y;
-    } // setCenterY( double )
-
-    public double getRadius() {
-        return this.radius;
-    } // getRadius()
-
-    public void setRadius(double r) {
-        this.radius = r;
-    } // setRadius( double )
 
     public Color getColor() {
         return this.color;
@@ -61,10 +62,6 @@ public class SwingPanel extends JPanel implements ActionListener {
     public void setColor(Color c) {
         this.color = c;
     } // setColor( Color )
-
-    public void setShape(String s) {
-        this.shapeDraw = s;
-    } // setShape(String)
 
     @Override
     public void paintComponent(Graphics g) {
@@ -75,43 +72,114 @@ public class SwingPanel extends JPanel implements ActionListener {
         int h = this.getHeight();
 
         AffineTransform transform = new AffineTransform();
+
+        AffineTransform rotation = new AffineTransform();
+        rotation.setToRotation(this.phase);
+
         AffineTransform scaling = new AffineTransform();
         scaling.setToScale(w / 2, h / 2);
+
         AffineTransform translation = new AffineTransform();
-        translation.setToTranslation(1.0, 1.0);
+        double cx = 1.0;
+        double cy = 1.0;
+        translation.setToTranslation(cx, cy);
 
         transform.concatenate(scaling);
         transform.concatenate(translation);
-
-        if (shapeDraw == "Circle") {
-            double d = 2 * this.radius;
-            double ulx = this.centerX;
-            double uly = this.centerY;
-            Ellipse2D.Double circle = new Ellipse2D.Double(ulx, uly, d, d);
-            Shape shape = transform.createTransformedShape(circle);
-            g2D.setColor(Color.red);
-            g2D.fill(shape);
-        } // if
-
+        
+        List<Polygon3D> faces = this.prism.getFaces();
+        for(Polygon3D p : faces){
+            Shape s = transform.createTransformedShape(p.getShape());
+            
+            Vector normal = p.getNormal();
+            if (normal.get(2) > 0){
+                double brightness = normal.dot(illumination);
+                
+                Color c = this.getColor();
+                
+                double ambient = 0.5;
+                int red;
+                int green;
+                int blue;
+                if(brightness > 0){
+                    red = (int) (brightness * c.getRed());
+                    green = (int) (brightness * c.getGreen());
+                    blue = (int) (brightness * c.getBlue());
+                    
+                } // if
+                
+                else {
+                    red = (int) (ambient * c.getRed());
+                    green = (int) (ambient * c.getGreen());
+                    blue = (int) (ambient * c.getBlue());
+                    
+                } // else
+                Color shade = new Color(red, green, blue);
+                
+                g2D.setColor(shade);
+                g2D.fill(s);
+            } // if
+            
+        } // for
+        
     } // paintComponent( Graphics )
+
+    private Shape makeStar(int points,
+            double centerX, double centerY,
+            double minorRadius, double majorRadius) {
+
+        GeneralPath star = new GeneralPath();
+
+        double x = centerX + majorRadius * Math.cos(0.0);
+        double y = centerY + majorRadius * Math.sin(0.0);
+        star.moveTo(x, y);
+        for (int i = 1; i < 2 * points; i++) {
+            double fraction = ((double) i) / (2 * points);
+            double angle = 2.0 * Math.PI * fraction;
+
+            if (i % 2 == 0) {
+                x = centerX + majorRadius * Math.cos(angle);
+                y = centerY + majorRadius * Math.sin(angle);
+            } // if
+            else {
+                x = centerX + minorRadius * Math.cos(angle);
+                y = centerY + minorRadius * Math.sin(angle);
+            } // else
+            star.lineTo(x, y);
+        } // for
+        star.closePath();
+
+        return star;
+    } // makeStar()
 
     @Override
     public void actionPerformed(ActionEvent event) {
+        // You might also like to try what happens
+        // in each step of the animation
+        // Move? In which direction? How much?
+        // Make bigger? Or make smaller?
+        // Rotate? (There's an AffineTransform for that, too.)
+        // Change color?
 
-        this.centerY = this.centerY + (direction[0]);
-        this.centerX = this.centerX + (direction[1]);
-        if (Math.abs(this.centerY + radius) > 1) {
-            direction[0] = -direction[0];
-        } // if
-        if (Math.abs(this.centerX + radius) > 1) {
-            direction[1] = -direction[1];
-        } // if
-
+//        if ((this.centerX < -0.5) || (this.centerX > 0.5)) {
+//            this.deltaX = -this.deltaX;
+//        } // if
+//
+//        if ((this.centerY < -0.5) || (this.centerY > 0.5)) {
+//            this.deltaY = -this.deltaY;
+//        } // if
+//
+//        this.centerX += this.deltaX;
+//        this.centerY += this.deltaY;
+//
+//        this.phase += this.deltaAngle;
+//
+//        if (this.phase > 2 * Math.PI) {
+//            this.phase = this.phase - 2 * Math.PI;
+//        } // if
+        
+        this.poly.transform(spinner);
         this.repaint();
     } // actionPerformed( ActionEvent )
-    
-    public static void main(String[] args){
-        System.out.println("Color");
-    } // main
 
 } // SwingPanel
