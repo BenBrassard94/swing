@@ -12,8 +12,8 @@ import javax.swing.JMenuItem;
 
 public class Swing extends JFrame {
 
-    private final int FRAME_WIDTH = 512;
-    private final int FRAME_HEIGHT = 512;
+    private final int FRAME_WIDTH = 700;
+    private final int FRAME_HEIGHT = 700;
     private final String FRAME_TITLE = "Graded Assignment 1";
     private final int NUMBER_OF_COLORS = 12;
     private final String BG_COLOR = "Background Color";
