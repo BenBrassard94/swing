@@ -39,6 +39,12 @@ public class SwingPanel extends JPanel implements ActionListener {
     private final Vector illumination;
 
     // Borrowed from Leon Tabak
+    
+    /**
+     * Creates the whole process of printing the prism
+     * and make it rotate in a 3D plane
+     */
+    
     public SwingPanel() {
         Timer timer = new Timer(20, this);
         timer.start();
@@ -59,14 +65,32 @@ public class SwingPanel extends JPanel implements ActionListener {
 
     } // SwingPanel()
 
+    /**
+     * Grabs the wanted color
+     * 
+     * @return The desired color 
+     */
+    
     public Color getColor() {
         return this.color;
     } // getColor()
 
+    /**
+     * Sets the color to the value of c
+     * 
+     * @param c The desired color value
+     */
+    
     public void setColor(Color c) {
         this.color = c;
     } // setColor( Color )
 
+    /**
+     * Creates the prism and prints it
+     * 
+     * @param g The graphic matrix
+     */
+    
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -124,59 +148,44 @@ public class SwingPanel extends JPanel implements ActionListener {
 
     } // paintComponent( Graphics )
 
-    private Shape makeStar(int points,
-            double centerX, double centerY,
-            double minorRadius, double majorRadius) {
+//    private Shape makeStar(int points,
+//            double centerX, double centerY,
+//            double minorRadius, double majorRadius) {
+//
+//        GeneralPath star = new GeneralPath();
+//
+//        double x = centerX + majorRadius * Math.cos(0.0);
+//        double y = centerY + majorRadius * Math.sin(0.0);
+//        star.moveTo(x, y);
+//        for (int i = 1; i < 2 * points; i++) {
+//            double fraction = ((double) i) / (2 * points);
+//            double angle = 2.0 * Math.PI * fraction;
+//
+//            if (i % 2 == 0) {
+//                x = centerX + majorRadius * Math.cos(angle);
+//                y = centerY + majorRadius * Math.sin(angle);
+//            } // if
+//            else {
+//                x = centerX + minorRadius * Math.cos(angle);
+//                y = centerY + minorRadius * Math.sin(angle);
+//            } // else
+//            star.lineTo(x, y);
+//        } // for
+//        star.closePath();
+//
+//        return star;
+//    } // makeStar()
 
-        GeneralPath star = new GeneralPath();
-
-        double x = centerX + majorRadius * Math.cos(0.0);
-        double y = centerY + majorRadius * Math.sin(0.0);
-        star.moveTo(x, y);
-        for (int i = 1; i < 2 * points; i++) {
-            double fraction = ((double) i) / (2 * points);
-            double angle = 2.0 * Math.PI * fraction;
-
-            if (i % 2 == 0) {
-                x = centerX + majorRadius * Math.cos(angle);
-                y = centerY + majorRadius * Math.sin(angle);
-            } // if
-            else {
-                x = centerX + minorRadius * Math.cos(angle);
-                y = centerY + minorRadius * Math.sin(angle);
-            } // else
-            star.lineTo(x, y);
-        } // for
-        star.closePath();
-
-        return star;
-    } // makeStar()
-
+    /**
+     * Performs the movement of the prism and reprints it 
+     * fast to add the animation
+     * 
+     * @param event The wanted movement of the prism
+     */
+    
     @Override
     public void actionPerformed(ActionEvent event) {
-        // You might also like to try what happens
-        // in each step of the animation
-        // Move? In which direction? How much?
-        // Make bigger? Or make smaller?
-        // Rotate? (There's an AffineTransform for that, too.)
-        // Change color?
 
-//        if ((this.centerX < -0.5) || (this.centerX > 0.5)) {
-//            this.deltaX = -this.deltaX;
-//        } // if
-//
-//        if ((this.centerY < -0.5) || (this.centerY > 0.5)) {
-//            this.deltaY = -this.deltaY;
-//        } // if
-//
-//        this.centerX += this.deltaX;
-//        this.centerY += this.deltaY;
-//
-//        this.phase += this.deltaAngle;
-//
-//        if (this.phase > 2 * Math.PI) {
-//            this.phase = this.phase - 2 * Math.PI;
-//        } // if
         this.prism.transform(spinner);
         this.repaint();
     } // actionPerformed( ActionEvent )
