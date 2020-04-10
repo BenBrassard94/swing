@@ -15,6 +15,14 @@ public class Polygon3D {
     private final List<Vector> points = new ArrayList<>();
     private final int mode;
 
+    /**
+     * Adds multiple Vectors to create the polygon
+     * 
+     * @param v0 The first Vector
+     * @param v1 The second Vector
+     * @param v2 The third Vector
+     */
+    
     public Polygon3D(Vector v0, Vector v1, Vector v2) {
         this.points.add(v0);
         this.points.add(v1);
@@ -22,6 +30,16 @@ public class Polygon3D {
         this.mode = Polygon3D.CCW;
     } // Polygon3D( Vector, Vector, Vector)
 
+    /**
+     * Sets the parameters for the sides and radius
+     * of the prism
+     * 
+     * @param sides The amount of sides wanted
+     * @param radius The radius wanted
+     * @param z The last part of the Vector
+     * @param mode Sets the private variable above
+     */
+    
     public Polygon3D(int sides, double radius, double z, int mode) {
         for (int i = 0; i < sides; i++) {
             double fraction = ((double) i) / sides;
@@ -34,10 +52,25 @@ public class Polygon3D {
         this.mode = mode;
     } // Polygon3D(int, double)
 
+    /**
+     * Grabs the vertices put into the system
+     * 
+     * @return The amount of points, as I called it :)
+     */
+    
     public List<Vector> getVertices() {
         return this.points;
     } // getVertices
 
+    /**
+     * Cleans the whole process of creating the prism and 
+     * overall does the computation to create a prism
+     * 
+     * @param otherPolygon The other polygon that's being created to create 
+     * the faces
+     * @return The different faces to create the 3D object
+     */
+    
     public List<Polygon3D> makeSleeve(Polygon3D otherPolygon) {
         List<Polygon3D> faces = new ArrayList<>();
 
@@ -84,12 +117,24 @@ public class Polygon3D {
 
     } // makeSleeve(Polygon3D)
 
+    /**
+     * Multiplies the matrix and the vector
+     * 
+     * @param m The matrix used for multiplication
+     */
+    
     public void transform(Matrix m) {
         for (Vector u : this.points) {
             u.set(m.multiply(u));
         } // for
     } // transform(Matrix)
 
+    /**
+     * Normalizes the Vectors
+     * 
+     * @return The normalized vectors
+     */
+    
     public Vector getNormal() {
         Vector p0 = this.points.get(0);
         Vector p1 = this.points.get(1);
@@ -109,6 +154,12 @@ public class Polygon3D {
         return crossProduct.normalize();
     } // getNormal()
 
+    /**
+     * Grabs the wanted shape and moves 
+     * 
+     * @return The path of the prism
+     */
+    
     public Shape getShape() {
         GeneralPath path = new GeneralPath();
 
