@@ -136,4 +136,12 @@ public class Vector {
         this.h = v.h;
         
     } // set(Vector)
+    
+   public Vector subtract( Vector v){
+       double x = this.x - v.x;
+       double y = this.y - v.y;
+       double z = this.z - v.z;
+       return new Vector(x, y, z);
+       
+   } // subtract(Vector)
 } // Vector
