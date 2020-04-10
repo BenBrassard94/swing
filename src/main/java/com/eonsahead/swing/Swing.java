@@ -14,13 +14,13 @@ public class Swing extends JFrame {
 
     private final int FRAME_WIDTH = 512;
     private final int FRAME_HEIGHT = 512;
-    private final String FRAME_TITLE = "Swing";
-    private final int NUMBER_OF_COLORS = 10;
+    private final String FRAME_TITLE = "Graded Assignment 1";
+    private final int NUMBER_OF_COLORS = 12;
     private final String BG_COLOR = "Background Color";
-    private final String FG_COLOR = "Foreground Color";
+    private final String FG_COLOR = "Shape Color";
 
     private final List<Color> bgPalette = new ArrayList<>();
-    private final List<Color> fgPalette = new ArrayList<>();
+    private final List<Color> sPalette = new ArrayList<>();
     private final SwingPanel panel;
     private final Random rng = new Random();
 
@@ -42,10 +42,10 @@ public class Swing extends JFrame {
 
         for (int i = 0; i < NUMBER_OF_COLORS; i++) {
             Color color = makeColor(32, 224);
-            fgPalette.add(color);
+            sPalette.add(color);
 
         } // for
-        this.panel.setColor(fgPalette.get(0));
+        this.panel.setColor(sPalette.get(0));
 
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
@@ -65,7 +65,7 @@ public class Swing extends JFrame {
         menuBar.add(fgColorMenu);
 
         MenuListener fgListener = new MenuListener(MenuListener.FG_MODE,
-                this.FG_COLOR, this.fgPalette, this.panel);
+                this.FG_COLOR, this.sPalette, this.panel);
 
         for (int i = 0; i < NUMBER_OF_COLORS; i++) {
             makeMenuItem(FG_COLOR, i, fgListener, fgColorMenu);
