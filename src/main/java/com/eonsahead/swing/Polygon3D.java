@@ -7,6 +7,12 @@ import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author bj.brassard
+ * @version 9 April 2020
+ */
+
 public class Polygon3D {
 
     public static final int CW = 0;
