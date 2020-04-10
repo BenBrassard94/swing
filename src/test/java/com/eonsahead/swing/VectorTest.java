@@ -11,63 +11,93 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  *
  * @author bj.brassard
+ * @version 8 April 2020
  */
 public class VectorTest {
     
+    private static final double EPSILON = 1E-8;
+    
     public VectorTest() {
-    }
+    } // VectorTest()
+    
+    /**
+     * Test the get method of the Vector class
+     * 
+     * Should return first element of the 4D Vector
+     */
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testGet() {
         System.out.println("get");
         int num = 0;
-        Vector instance = null;
-        double expResult = 0.0;
+        Vector instance = new Vector( 94.0, 0.0, 0.0);
+        double expResult = 94.0;
         double result = instance.get(num);
-        assertEquals(expResult, result, 0.0);
-        fail("The test case is a prototype.");
-    }
+        assertEquals(expResult, result, EPSILON);
+    } // testGet()
 
-    @org.junit.jupiter.api.Test
+    /**
+     * Test Dot method of Vector class
+     * 
+     * Test the dot product of Vector v and u
+     */
+    
+    @Test
     public void testDot() {
-        System.out.println("dot");
-        Vector v = null;
-        Vector instance = null;
+        Vector u = new Vector(0, 1, 0);
+        Vector v = new Vector(1, 0, 0);
         double expResult = 0.0;
-        double result = instance.dot(v);
-        assertEquals(expResult, result, 0.0);
-        fail("The test case is a prototype.");
-    }
+        double result = u.dot(v);
+        assertEquals(expResult, result, EPSILON);
+    } // testDot()
 
-    @org.junit.jupiter.api.Test
+    /**
+     * Test the magnitude method of the Vector class
+     * 
+     * Test the magnitude of the Vector instance
+     */
+    
+    @Test
     public void testMagnitude() {
-        System.out.println("magnitude");
-        Vector instance = null;
-        double expResult = 0.0;
+        Vector instance = new Vector(1, 0, 0);
+        double expResult = 1;
         double result = instance.magnitude();
-        assertEquals(expResult, result, 0.0);
-        fail("The test case is a prototype.");
-    }
+        assertEquals(expResult, result, EPSILON);
+    } // testMagnitude()
+    
+    /**
+     * Test the normalize method of the Vector Class
+     * 
+     * Test the normalization of the Vector (1, 0, 0)
+     */
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testNormalize() {
-        System.out.println("normalize");
-        Vector instance = null;
-        Vector expResult = null;
+        Vector instance = new Vector(1, 0, 0);
+        Vector expResult = new Vector(1, 0, 0);
         Vector result = instance.normalize();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
+        for(int i =0; i < 4; i++){
+            assertEquals(expResult.get(i), result.get(i), EPSILON);
+        } // for
 
-    @org.junit.jupiter.api.Test
+    } // testNormalize()
+    
+    /**
+     * Test the cross method of the Vector class
+     * 
+     * Test the two vectors v and instance
+     */
+
+    @Test
     public void testCross() {
-        System.out.println("cross");
-        Vector v = null;
-        Vector instance = null;
-        Vector expResult = null;
+        Vector v = new Vector(0, 1, 0);
+        Vector instance = new Vector(1, 0, 0);
+        Vector expResult = new Vector(0, 0, 1);
         Vector result = instance.cross(v);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
+        for(int i = 0; i < 4; i++){
+            assertEquals(expResult.get(i), result.get(i), EPSILON);
+        } // for
+
+    } // testCross()
     
 }
